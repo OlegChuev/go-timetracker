@@ -9,7 +9,7 @@ GO          ?= go
 LDFLAGS     := -s -w
 
 .DEFAULT_GOAL := help
-.PHONY: help build run dev test test-race cover bench lint fmt vet tidy deps clean reset-db db docker
+.PHONY: help build build-mac run dev test test-race cover bench lint fmt vet tidy deps clean reset-db db docker
 
 help: ## Show this help
 	@echo "Telegram time tracker"
@@ -23,6 +23,12 @@ build: ## Compile the bot into bin/
 	@mkdir -p $(BUILD_DIR)
 	$(GO) build -trimpath -ldflags "$(LDFLAGS)" -o $(BUILD_DIR)/$(BINARY) .
 	@echo "built $(BUILD_DIR)/$(BINARY)"
+
+build-mac: ## Cross-compile for Apple Silicon (macOS arm64)
+	@mkdir -p $(BUILD_DIR)
+	GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 $(GO) build -trimpath \
+		-ldflags "$(LDFLAGS)" -o $(BUILD_DIR)/$(BINARY)-darwin-arm64 .
+	@echo "built $(BUILD_DIR)/$(BINARY)-darwin-arm64"
 
 run: ## Run the bot (reads .env)
 	$(GO) run .

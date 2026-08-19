@@ -264,7 +264,17 @@ make test        # run the test suite
 make test-race   # run it under the race detector
 make lint        # gofmt check plus go vet
 make build       # compile to bin/timetracker
+make build-mac   # cross-compile for Apple Silicon
 make cover       # coverage report
+```
+
+Because the SQLite driver is pure Go, cross-compiling needs no toolchain and no
+cgo — `make build-mac` produces a native `bin/timetracker-darwin-arm64` for
+Apple Silicon from any machine. Other targets are the same one-liner with
+different values:
+
+```bash
+GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o bin/timetracker-darwin-amd64 .
 ```
 
 Tests cover the money arithmetic in both pay modes and the day/week/month
