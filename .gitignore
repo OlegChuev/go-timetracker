@@ -1,0 +1,12 @@
+# Secrets and local configuration
+.env
+
+# Database files, including the WAL sidecars SQLite creates
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Build output
+bin/
+coverage.out
